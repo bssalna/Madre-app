@@ -18,7 +18,13 @@
     }
 }
 
-/* Estilos para pantallas grandes */
+.encabezado {
+    text-align: center;
+    padding: 20px;
+    background-image: linear-gradient(to right, #fcc4f9, #ffffff77);
+    animation: slideIn 1s ease-in-out;
+}
+
 body {
     background-image: linear-gradient(to right, #fadaf8, #ffffff77);
     font-family: 'Montserrat', sans-serif;
@@ -29,14 +35,6 @@ body {
     body {
         /* Aquí puedes agregar estilos específicos para pantallas más pequeñas */
     }
-}
-
-
-.encabezado {
-    text-align: center;
-    padding: 20px;
-    background-image: linear-gradient(to right, #fcc4f9, #ffffff77);
-    animation: slideIn 1s ease-in-out;
 }
 
 .encabezado h1 {

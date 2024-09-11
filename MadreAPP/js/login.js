@@ -1,5 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => 
-    {
+document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById('loginForm');
 
     form.addEventListener('submit', function(event) {
@@ -23,3 +22,14 @@ document.addEventListener("DOMContentLoaded", () =>
         window.location.href = "../code/crear_cuenta.html"; // Redirige a la página de creación de cuenta
     });
 });
+
+//-------------------------------------------------------------------------------
+function MiFuncion(){
+    console.log("hola")
+    console.log("hola")
+    return "Mundo"
+    
+
+}
+
+console.log(MiFuncion());
