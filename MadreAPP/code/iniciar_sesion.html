@@ -2,52 +2,53 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="es un aplicativo administrador económico de las familias colombianas">
+    <meta name="description" content="Es un aplicativo administrador económico de las familias colombianas">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madre</title>       
+    <title>Madre</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <style>
-        body {font-family: 'Montserrat', sans-serif;}
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
     <link rel="apple-touch-icon" href="../img/mother-and-son-silhouettes-svgrepo-com.svg">
     <link rel="stylesheet" href="../css/style.css">  
-    <script src="../js/login.js"></script>
+    <script src="/js/login.js" defer></script> 
+    <style>
+        body { font-family: 'Montserrat', sans-serif; }
+    </style>
 </head>
-<body>      
-     <header class="encabezado">
+<body>
+    <header class="encabezado">
         <a href="../code/index.html" style="text-decoration: none;">
             <h1>Madre ♥.♥</h1>
-        </a>        
+        </a>
         <h2>Administradora de tu hogar.</h2>
-    </header>    
+    </header>
     <div class="contenido">
-        <form class="form" action="../code/menu principal/menu_principal.html" method="post">
+        <form id="loginForm" action="/login" method="post">
             <h2>Por favor ingrese sus credenciales</h2>
             <label for="usuario" id="usuarioLabel">Usuario:</label>
-            <br><br>
             <input type="text" id="usuario" name="usuario" placeholder="Ingrese su usuario" required>
-            <br><br>
+            
             <label for="contraseña" id="contraseñaLabel">Contraseña:</label>
-            <br><br>
-            <input type="password" id="contraseña"  name="contraseña" placeholder="Ingrese su Contraseña" required>
-            <br><br>
+            <input type="password" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña" required>
+            
             <input type="submit" id="submitiniciarsesion" value="Iniciar sesión">
-            <br><br>
             <input type="submit" id="submitcrearcuenta" value="Crear cuenta" formaction="../code/crear_cuenta.html">
-            <br><br><br>
-            <a href="../code/olvide_contraseña.html">Olvidé mi contraseña</a> 
-        </form>            
+            <br>
+            <a href="../code/olvide_contraseña.html">Olvidé mi contraseña</a>
+        </form>
     </div>
-    <body>       
-      <footer class="piedepagina">
+    <footer class="piedepagina">
         <div class="contactenos">
-            <h3>Contactenos</h3>          
+            <h3>Contáctenos</h3>
             <p>Celular: 3014707064</p>
-            <p>Telefono: 5555555</p>
+            <p>Teléfono: 5555555</p>
             <p>Correo: brandonvelasalinas@gmail.com</p>
-            <p>Direccion: calle 30c sur # 1-61 este</p>
+            <p>Dirección: Calle 30c sur # 1-61 este</p>
         </div>
     </footer>
-    </html>
+</body>
+</html>
+//--------------------------------------------
+
+
+

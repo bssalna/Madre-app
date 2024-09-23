@@ -1,35 +1,37 @@
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById('loginForm');
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault(); // Evita el comportamiento por defecto del formulario
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
 
         const usuario = document.getElementById('usuario').value;
         const contraseña = document.getElementById('contraseña').value;
 
-        // Aquí se debería conectar con una base de datos o API para validar las credenciales
-        if (usuario === "correctUser" && contraseña === "correctPassword") {
-            window.location.href = "../code/menu_principal/menu_principal.html"; // Redirige al menú principal
-        } else {
-            alert("Credenciales incorrectas, por favor intente de nuevo.");
-        }
-    });
+        try {
+            const response = await fetch('http://localhost:3000/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `usuario=${encodeURIComponent(usuario)}&contraseña=${encodeURIComponent(contraseña)}`
+            });
 
-    // Manejo del botón "Crear cuenta"
-    const crearCuentaBtn = document.getElementById('submitcrearcuenta');
-    crearCuentaBtn.addEventListener('click', function(event) {
-        event.preventDefault(); // Evita el comportamiento por defecto
-        window.location.href = "../code/crear_cuenta.html"; // Redirige a la página de creación de cuenta
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.text();
+            alert(result);
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Hubo un problema con la solicitud.');
+        }
     });
 });
 
+
+
+   
 //-------------------------------------------------------------------------------
-function MiFuncion(){
-    console.log("hola")
-    console.log("hola")
-    return "Mundo"
-    
 
-}
 
-console.log(MiFuncion());
