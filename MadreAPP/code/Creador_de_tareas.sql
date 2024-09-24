@@ -1,64 +1,39 @@
+CREATE TABLE Perfiles (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    correo VARCHAR(255) UNIQUE NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    nombre VARCHAR(255) NOT NULL,
+    edad INT NOT NULL,
+    peso DECIMAL(5,2),
+    fecha_nacimiento DATE,
+    estatura DECIMAL(5,2)
+);
 
 
-DROP TABLE IF EXISTS `perfil`;
-
-CREATE TABLE `perfil` (
-  `id_usuario` int(11) NOT NULL,
-  `nombre` varchar(255) NOT NULL,
-  `edad` int(11) DEFAULT NULL,
-  `peso` decimal(5,2) DEFAULT NULL,
-  `correo` varchar(255) NOT NULL,
-  `fecha_nacimiento` date DEFAULT NULL,
-  `estatura` decimal(5,2) DEFAULT NULL,
-  PRIMARY KEY (`id_usuario`),
-  UNIQUE KEY `correo` (`correo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE Tareas (
+    id_tarea INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    valor_tarea DECIMAL(5,2),
+    intensidad_tarea VARCHAR(50)
+);
 
 
+CREATE TABLE Realiza (
+    id_realizacion INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT,
+    id_tarea INT,
+    estado ENUM('pendiente', 'completada', 'en progreso') NOT NULL,
+    fecha_asignacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES Perfiles(id_usuario),
+    FOREIGN KEY (id_tarea) REFERENCES Tareas(id_tarea)
+);
 
 
-LOCK TABLES `perfil` WRITE;
-
-UNLOCK TABLES;
-
-
-
-DROP TABLE IF EXISTS `realiza`;
-
-CREATE TABLE `realiza` (
-  `id_realizacion` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
-  `id_tarea` int(11) DEFAULT NULL,
-  `estado` varchar(50) NOT NULL CHECK (`estado` in ('pendiente','completada','en progreso','otros')),
-  `fecha_asignacion` datetime DEFAULT NULL,
-  PRIMARY KEY (`id_realizacion`),
-  KEY `id_usuario` (`id_usuario`),
-  KEY `id_tarea` (`id_tarea`),
-  CONSTRAINT `realiza_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `perfil` (`id_usuario`),
-  CONSTRAINT `realiza_ibfk_2` FOREIGN KEY (`id_tarea`) REFERENCES `tareas` (`id_tarea`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-
-LOCK TABLES `realiza` WRITE;
-
-UNLOCK TABLES;
-
-
-DROP TABLE IF EXISTS `tareas`;
-
-CREATE TABLE `tareas` (
-  `id_tarea` int(11) NOT NULL,
-  `nombre` varchar(255) NOT NULL,
-  `descripcion` text DEFAULT NULL,
-  `valor_tarea` decimal(5,2) DEFAULT NULL,
-  `intencidad_tarea` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id_tarea`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-
-LOCK TABLES `tareas` WRITE;
-
-UNLOCK TABLES;
-
+CREATE TABLE Historial_Tareas (
+    id_historial INT AUTO_INCREMENT PRIMARY KEY,
+    id_realizacion INT,
+    fecha_completado DATETIME DEFAULT CURRENT_TIMESTAMP,
+    estado ENUM('pendiente', 'completada', 'en progreso') NOT NULL,
+    FOREIGN KEY (id_realizacion) REFERENCES Realiza(id_realizacion)
+);
