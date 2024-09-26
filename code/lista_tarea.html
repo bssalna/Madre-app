@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madre</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; }
+        .tarea { border: 1px solid #ccc; margin: 10px; padding: 10px; cursor: pointer; }
+        .tarea.selected { background-color: #e0f7fa; }
+    </style>
+</head>
+<body>
+    <header class="encabezado">
+        <h1>Madre ♥.♥</h1>
+        <h2>Administradora de tu hogar.</h2>
+    </header>
+
+    <h3>Tareas disponibles</h3>
+    <div id="listaTareas"></div>
+
+    <button id="guardarSeleccion">Guardar Selección</button>
+
+    <script>
+        // Función para cargar tareas desde el servidor
+        async function cargarTareas() {
+            const response = await fetch('http://localhost:3000/api/tareas');
+            const tareas = await response.json();
+            const listaTareas = document.getElementById('listaTareas');
+
+            tareas.forEach(tarea => {
+                const divTarea = document.createElement('div');
+                divTarea.classList.add('tarea');
+                divTarea.innerHTML = `
+                    <h4>${tarea.nombre}</h4>
+                    <p>${tarea.descripcion}</p>
+                    <p>Complejidad: ${tarea.valor_tarea} puntos</p>
+                    <p>Intensidad: ${tarea.intensidad_tarea} días</p>
+                `;
+
+                divTarea.addEventListener('click', () => {
+                    divTarea.classList.toggle('selected');
+                });
+
+                listaTareas.appendChild(divTarea);
+            });
+        }
+
+        // Guardar selección de tareas
+        document.getElementById('guardarSeleccion').addEventListener('click', async () => {
+            const seleccionadas = Array.from(document.querySelectorAll('.tarea.selected')).map(tarea => {
+                return {
+                    nombre: tarea.querySelector('h4').textContent,
+                    descripcion: tarea.querySelector('p').textContent
+                };
+            });
+
+            const response = await fetch('http://localhost:3000/api/guardar-seleccion', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(seleccionadas)
+            });
+
+            if (response.ok) {
+                alert('Selección guardada exitosamente!');
+            } else {
+                alert('Error al guardar la selección.');
+            }
+        });
+
+        // Cargar las tareas al iniciar
+        window.onload = cargarTareas;
+    </script>
+</body>
+</html>
