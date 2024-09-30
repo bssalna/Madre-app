@@ -2,40 +2,36 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="description" content="es un aplicativo administrador económico de las familias colombianas">
+    <meta name="description" content="Es un aplicativo administrador económico de las familias colombianas">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Madre</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <style>
-        body {font-family: 'Montserrat', sans-serif;}
-    </style>  
-    <link rel="apple-touch-icon" href="../img/mother-and-son-silhouettes-svgrepo-com.svg">
-    <link rel="stylesheet" href="../css/style.css">      
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
-     <header class="encabezado">
+    <header class="encabezado">
         <a href="../iniciar_sesion.html" style="text-decoration: none;">
             <h1>Madre ♥.♥</h1>
-        </a>        
+        </a>
         <h2>Administradora de tu hogar.</h2>
-    </header>    
+    </header>
+    
     <div class="contenido">
         <article>
             <nav class="menu">
                 <ul>
-                    <li><a href="../code/lista_perfiles.html" id="perfilesmenu">Perfiles👥</a></li><br><br>     
-                    <li><a href="../code/tareas.html" id="tareasmenu">Tareas✎</a></li><br><br>                                   
-                    <li><a href="../code/Ajustes.html" id="configuracionmenu">Ajustes🛠</a></li>                
+                    <li><a href="../code/lista_perfiles.html" id="perfilesmenu">Perfiles👥</a></li>
+                    <li><a href="../code/tareas.html" id="tareasmenu">Tareas✎</a></li>
+                    <li><a href="../code/Ajustes.html" id="configuracionmenu">Ajustes🛠</a></li>
                 </ul>
             </nav>
-            <img src="../img/beautiful-mother-and-baby-abstract-by-Vexels.svg" alt="">
+            <div id="perfilesContainer"></div> <!-- Contenedor para los perfiles y tareas -->
         </article>
     </div>
-        <footer class="foters">
-                    <h2>"La virtud reside en el hogar. Cuando el hogar está bien ordenado, todas las cosas se encuentran en su lugar." - Confucio</h2>             
-        </footer>
+    
+    <footer class="foters">
+        <h2>"La virtud reside en el hogar. Cuando el hogar está bien ordenado, todas las cosas se encuentran en su lugar." - Confucio</h2>
+    </footer>
+
+    <script src="../js/menu_principal.js"></script> <!-- Archivo JavaScript para manejar la lógica -->
 </body>
 </html>
-

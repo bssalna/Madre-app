@@ -1,4 +1,4 @@
-CREATE TABLE Perfiles (
+    perfiles (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     correo VARCHAR(255) UNIQUE NOT NULL,
     contrasena VARCHAR(255) NOT NULL,
@@ -10,33 +10,28 @@ CREATE TABLE Perfiles (
 );
 
 
-CREATE TABLE Tareas (
+tareas (
     id_tarea INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    descripcion TEXT,
-    valor_tarea DECIMAL(5,2),
-    intensidad_tarea VARCHAR(50),
-    categoria VARCHAR(100),  -- Nueva columna para categorizar la tarea
-    frecuencia ENUM('diaria', 'semanal', 'mensual')  -- Nueva columna para frecuencia
+    nombre_tarea VARCHAR(255) NOT NULL,
+    descripcion TEXT NOT NULL,
+    valor_tarea INT NOT NULL,
+    frecuencia VARCHAR(255) NOT NULL,
+    estado ENUM('disponible', 'indisponible') DEFAULT 'disponible' 
 );
 
 
 
-CREATE TABLE Realiza (
-    id_realizacion INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT,
-    id_tarea INT,
-    estado ENUM('pendiente', 'completada', 'en progreso') NOT NULL,
-    fecha_asignacion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES Perfiles(id_usuario),
-    FOREIGN KEY (id_tarea) REFERENCES Tareas(id_tarea)
+
+    realiza (
+    id_usuario INT(11),
+    id_tarea INT(11),
+    estado ENUM('disponible', 'indisponible') NOT NULL,
+    fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id_usuario, id_tarea),
+    FOREIGN KEY (id_usuario) REFERENCES perfiles(id_usuario),
+    FOREIGN KEY (id_tarea) REFERENCES tareas(id_tarea)
+);
+
 );
 
 
-CREATE TABLE Historial_Tareas (
-    id_historial INT AUTO_INCREMENT PRIMARY KEY,
-    id_realizacion INT,
-    fecha_completado DATETIME DEFAULT CURRENT_TIMESTAMP,
-    estado ENUM('pendiente', 'completada', 'en progreso') NOT NULL,
-    FOREIGN KEY (id_realizacion) REFERENCES Realiza(id_realizacion)
-);

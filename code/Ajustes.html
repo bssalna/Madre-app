@@ -4,21 +4,59 @@
     <meta charset="UTF-8">
     <meta name="madre" content="es un aplicativo administrador económico de las familias colombianas">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Madre</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <style>
-        body {font-family: 'Montserrat', sans-serif;}
-    </style> 
-    <link rel="apple-touch-icon" href="../img/mother-and-son-silhouettes-svgrepo-com.svg">
+    <title>Ajustes - Madre</title>
     <link rel="stylesheet" href="../css/style.css">      
+    <script src="../js/ajustes.js" defer></script>
 </head>
 <body>
-     <header class="encabezado">
+    <header class="encabezado">
         <a href="../code/menu_principal.html" style="text-decoration: none;">
             <h1>Madre ♥.♥</h1>
         </a>        
         <h2>Administradora de tu hogar.</h2>
-    </header>  
+    </header>
+
+    <main>
+        <h2>Eliminar Perfiles</h2>
+        <table id="tablaPerfiles">
+            <thead>
+                <tr>
+                    <th>Correo</th>
+                    <th>Nombre</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se llenarán los perfiles desde JavaScript -->
+            </tbody>
+        </table>
+
+        <h2>Eliminar Tareas</h2>
+        <table id="tablaTareas">
+            <thead>
+                <tr>
+                    <th>Nombre de la Tarea</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se llenarán las tareas desde JavaScript -->
+            </tbody>
+        </table>
+
+        <h2>Eliminar Tareas Asignadas</h2>
+        <table id="tablaAsignaciones">
+            <thead>
+                <tr>
+                    <th>ID Usuario</th>
+                    <th>ID Tarea</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se llenarán las asignaciones desde JavaScript -->
+            </tbody>
+        </table>
+    </main>
 </body>
+</html>

@@ -204,3 +204,16 @@ input {
     max-width: 300px;
     height: auto;
 }
+
+.perfil {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.tareas {
+    margin-top: 10px;
+    padding: 5px;
+    background-color: #f9f9f9;
+}

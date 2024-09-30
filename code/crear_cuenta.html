@@ -15,51 +15,42 @@
     <link rel="stylesheet" href="../css/style.css">      
 </head>
 <body>
-     <header class="encabezado">
-        <a href="../menu principal/menu_principal.html" style="text-decoration: none;">
+    <header class="encabezado">
+        <a href="./iniciar_sesion.html" style="text-decoration: none;">
             <h1>Madre ♥.♥</h1>
         </a>        
         <h2>Administradora de tu hogar.</h2>
     </header>     
     <div class="formcrear">
-        <form action="perfilesactuales.html" method="post">
-
-            <label for="nombredelusuario">Nombre de usuario</label>
-            <br><br>
-            <input type="text" id="nombredelusuario" placeholder="Ejemplo: Pepito Perez" value="">
-            <br><br>
+        <form action="/api/perfiles" method="post">
+            <label for="correo">Correo</label>
+            <input type="email" id="correo" name="correo" placeholder="Ejemplo: pepitoperez@gmail.com" required autocomplete="email">
             
-            <label for="edaddelusuario">Edad</label>
-            <br><br>
-            <input type="number" id="edaddelusuario" placeholder="Ejemplo: 25" value=""> Años
-            <br><br>
+            <label for="contrasena">Contraseña</label>
+            <input type="password" id="contrasena" name="contrasena" placeholder="Contraseña" required autocomplete="new-password">
+        
+            <label for="nombre">Nombre de usuario</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Ejemplo: Pepito Perez" required autocomplete="username">
             
-            <label for="estaturadelusuario">Estatura</label>
-            <br><br>
-            <input type="number" id="estaturadelusuario" min="0" max="200" step="any" pattern="\d+(\.\d+)?" placeholder="Ejemplo: 1.70" value="" required> Cm
-            <br><br>
+            <label for="edad">Edad</label>
+            <input type="number" id="edad" name="edad" placeholder="Ejemplo: 25" required> Años
             
-            <label for="pesodelusuario">Peso</label>
-            <br><br>
-            <input type="number" id="pesodelusuario" min="0" max="200" step="any" pattern="\d+(\.\d+)?" placeholder="Ejemplo: 72.2" value="" required> Kg
-            <br><br>
+            <label for="estatura">Estatura</label>
+            <input type="number" id="estatura" name="estatura" min="0" max="200" step="any" placeholder="Ejemplo: 1.70" required> Cm
             
-            <label for="fechadenacimiento">Fecha de Nacimiento</label>
-            <br><br>
-            <input type="date" id="fechadenacimiento" placeholder="Ejemplo: 1990-01-01" value="" required>
-            <br><br>
+            <label for="peso">Peso</label>
+            <input type="number" id="peso" name="peso" min="0" max="200" step="any" placeholder="Ejemplo: 72.2" required> Kg
             
-            <label for="correodelusuario">Correo</label>
-            <br><br>
-            <input type="email" id="correodelusuario" placeholder="Ejemplo: pepitoperez@gmail.com" value="" required>
-            <br><br>
-                       
-            <input type="submit" id="submitcrearperfil" name="Crearperfil" value="Agregar miembro" formaction="../menu principal/lista_perfiles.html">       
+            <label for="fecha_nacimiento">Fecha de Nacimiento</label>
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" required>
+            
+            <input type="submit" value="Agregar miembro">
         </form>
     </div>    
-    <!-- Pie de página -->
     <footer class="foters">
         <h2>Agrega el miembro de tu hogar</h2>
     </footer>
+
+    <script src="/js/crear_cuenta.js"></script>
 </body>
 </html>

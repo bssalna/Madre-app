@@ -17,7 +17,7 @@
 </head>
 <body>
     <header class="encabezado">
-        <a href="../code/index.html" style="text-decoration: none;">
+        <a href="/index.html" style="text-decoration: none;">
             <h1>Madre ♥.♥</h1>
         </a>
         <h2>Administradora de tu hogar.</h2>
@@ -25,15 +25,15 @@
     <div class="contenido">
         <form id="loginForm" action="/login" method="post">
             <h2>Por favor ingrese sus credenciales</h2>
-            <label for="usuario" id="usuarioLabel">Usuario:</label>
-            <input type="text" id="usuario" name="usuario" placeholder="Ingrese su usuario" required>            
-            <label for="contraseña" id="contraseñaLabel">Contraseña:</label>
-            <input type="password" id="contraseña" name="contraseña" placeholder="Ingrese su contraseña" required>            
+            <label for="correo">Correo:</label>
+            <input type="email" id="correo" name="correo" placeholder="Ingrese su correo" required>                                  
+            <label for="contrasena">Contraseña:</label>
+            <input type="password" id="contrasena" name="contrasena" placeholder="Ingrese su contraseña" required>
+            <p id="error" style="color: red;"></p> <!-- Añadir para mensajes de error -->
             <input type="submit" id="submitiniciarsesion" value="Iniciar sesión">            
             <br><br>
-            <a href="../code/crear_cuenta.html">Crear cuenta</a><br>
-            <br>
-            <a href="../code/olvide_contraseña.html">Olvidé mi contraseña</a>
+            <a href="./crear_cuenta.html">Crear cuenta</a><br>
+            <br>          
         </form>
     </div>
     <footer class="piedepagina">
@@ -47,7 +47,3 @@
     </footer>
 </body>
 </html>
-
-
-
-
