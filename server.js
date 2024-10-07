@@ -125,20 +125,44 @@ app.get('/api/tareas', (req, res) => {
 
 // Asignar tareas a usuarios
 app.post('/api/asignarTareas', async (req, res) => {
-    const { id_usuario, tareas } = req.body;
+    const { correo, tareas } = req.body;
 
-    if (!id_usuario || !tareas || tareas.length === 0) {
+    if (!correo || !tareas || tareas.length === 0) {
         return res.status(400).json({ message: 'Datos incompletos' });
     }
 
     try {
-        const queryUpdate = `
-            UPDATE realiza 
-            SET estado = "pendiente"
-            WHERE id_usuario = ? AND id_tarea IN (?)
-        `;
-        
-        await db.query(queryUpdate, [id_usuario, tareas]);
+        // Comprobar si todas las tareas están disponibles
+        const tareasDisponibles = await new Promise((resolve, reject) => {
+            const query = 'SELECT id_tarea FROM tareas WHERE id_tarea IN (?) AND estado = "disponible"';
+            db.query(query, [tareas], (err, results) => {
+                if (err) return reject(err);
+                resolve(results);
+            });
+        });
+
+        if (tareasDisponibles.length !== tareas.length) {
+            return res.status(400).json({ message: 'Algunas tareas no están disponibles' });
+        }
+
+        // Asignar tareas y actualizar su estado
+        const queryInsert = 'INSERT INTO realiza (correo, id_tarea, estado) VALUES ?';
+        const values = tareas.map(tarea => [correo, tarea, 'indisponible']); // Estado 'indisponible' al asignar
+        await new Promise((resolve, reject) => {
+            db.query(queryInsert, [values], (err, results) => {
+                if (err) return reject(err);
+                resolve(results);
+            });
+        });
+
+        // Actualizar el estado de las tareas a 'indisponible'
+        const queryUpdate = 'UPDATE tareas SET estado = "indisponible" WHERE id_tarea IN (?)';
+        await new Promise((resolve, reject) => {
+            db.query(queryUpdate, [tareas], (err, results) => {
+                if (err) return reject(err);
+                resolve(results);
+            });
+        });
 
         res.json({ message: 'Tareas asignadas con éxito' });
     } catch (error) {
@@ -147,23 +171,28 @@ app.post('/api/asignarTareas', async (req, res) => {
     }
 });
 
-// Obtener asignaciones de tareas
-app.get('/api/asignaciones', (req, res) => {
+// Obtener tareas disponibles para un usuario
+app.get('/api/tareasDisponibles/:correo', (req, res) => {
+    const { correo } = req.params;
+    
     const sql = `
-        SELECT r.id_usuario, r.id_tarea
-        FROM realiza r
-        JOIN Perfiles p ON r.id_usuario = p.id_usuario
-    `; 
+        SELECT t.id_tarea, t.nombre_tarea, t.descripcion, t.valor_tarea, t.frecuencia
+        FROM tareas t
+        LEFT JOIN realiza r ON t.id_tarea = r.id_tarea AND r.estado = 'indisponible'
+        WHERE r.correo IS NULL AND t.estado = 'disponible' 
+    `;
+
     db.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
     });
 });
 
+
 // Eliminar perfiles
 app.delete('/api/perfiles/:id', (req, res) => {
     const { id } = req.params;
-    const sql = 'DELETE FROM Perfiles WHERE id_usuario = ?'; 
+    const sql = 'DELETE FROM Perfiles WHERE correo = ?'; 
 
     db.query(sql, [id], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -172,18 +201,35 @@ app.delete('/api/perfiles/:id', (req, res) => {
 });
 
 // Obtener tareas disponibles para un usuario
-app.get('/api/tareasDisponibles/:id_usuario', (req, res) => {
-    const { id_usuario } = req.params;
+app.get('/api/tareasDisponibles/:correo', (req, res) => {
+    const { correo } = req.params;
     
     const sql = `
         SELECT t.id_tarea, t.nombre_tarea, t.descripcion, t.valor_tarea, t.frecuencia
         FROM tareas t
         LEFT JOIN realiza r ON t.id_tarea = r.id_tarea AND r.estado = 'indisponible'
-        WHERE r.id_usuario IS NULL OR r.id_usuario = ? AND t.estado = 'disponible' 
+        WHERE r.correo IS NULL OR r.correo = ? AND t.estado = 'disponible' 
     `;
 
-    db.query(sql, [id_usuario], (err, results) => {
+    db.query(sql, [correo], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
     });
 });
+
+// Obtener perfiles con tareas de estado 'indisponible'
+app.get('/api/perfilesConTareasIndisponibles', (req, res) => {
+    const sql = `
+        SELECT p.nombre AS nombre_perfil, t.nombre_tarea, t.frecuencia
+        FROM perfiles p
+        JOIN realiza r ON p.correo = r.correo
+        JOIN tareas t ON r.id_tarea = t.id_tarea
+        WHERE r.estado = 'indisponible'
+    `;
+
+    db.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+});
+

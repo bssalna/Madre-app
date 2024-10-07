@@ -49,12 +49,8 @@ MadreAPP/
 ├── token.txt
 
 
-
-
-
-CREATE TABLE Perfiles (
-    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
-    correo VARCHAR(255) UNIQUE NOT NULL,
+CREATE TABLE perfiles (
+    correo VARCHAR(255) PRIMARY KEY,
     contrasena VARCHAR(255) NOT NULL,
     nombre VARCHAR(255) NOT NULL,
     edad INT NOT NULL,
@@ -63,29 +59,25 @@ CREATE TABLE Perfiles (
     estatura DECIMAL(5,2)
 );
 
-
-CREATE TABLE Tareas (
+CREATE TABLE tareas (
     id_tarea INT AUTO_INCREMENT PRIMARY KEY,
     nombre_tarea VARCHAR(255) NOT NULL,
-    descripcion TEXT,
-    valor_tarea DECIMAL(5,2),
-    frecuencia ENUM('diaria', 'semanal', 'mensual')  -- Nueva columna para frecuencia
+    descripcion TEXT NOT NULL,
+    valor_tarea INT NOT NULL,
+    frecuencia VARCHAR(255) NOT NULL,
+    estado ENUM('disponible', 'indisponible') DEFAULT 'disponible'
 );
 
-
-
-
 CREATE TABLE realiza (
-    id_realiza INT AUTO_INCREMENT PRIMARY KEY,
-    id_usuario INT NOT NULL,
-    id_tarea INT NOT NULL,
-    estado ENUM('pendiente', 'completada') DEFAULT 'pendiente',
+    correo VARCHAR(255),
+    id_tarea INT(11),
+    estado ENUM('disponible', 'indisponible') NOT NULL,
     fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_usuario) REFERENCES perfiles(id_usuario),
+    PRIMARY KEY (correo, id_tarea),
+    FOREIGN KEY (correo) REFERENCES perfiles(correo),
     FOREIGN KEY (id_tarea) REFERENCES tareas(id_tarea)
 );
 
-);
 
 ## Relaciones
 

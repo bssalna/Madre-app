@@ -1,89 +1,108 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    await cargarPerfiles();
-    await cargarTareas();
-    await cargarAsignaciones(); // Cargar tareas asignadas
+document.addEventListener('DOMContentLoaded', () => {
+    cargarPerfiles();
+    cargarTareas();
+    cargarSelects();
 });
 
+// Cargar perfiles
 async function cargarPerfiles() {
     const response = await fetch('/api/perfiles');
     const perfiles = await response.json();
     const tbody = document.querySelector('#tablaPerfiles tbody');
+    tbody.innerHTML = '';
 
     perfiles.forEach(perfil => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+        const row = document.createElement('tr');
+        row.innerHTML = `
             <td>${perfil.correo}</td>
             <td>${perfil.nombre}</td>
-            <td><button onclick="eliminarPerfil(${perfil.id_usuario})">Eliminar</button></td>
+            <td><button onclick="eliminarPerfil('${perfil.correo}')">Eliminar</button></td>
         `;
-        tbody.appendChild(tr);
+        tbody.appendChild(row);
     });
 }
 
+// Eliminar perfil
+async function eliminarPerfil(correo) {
+    const response = await fetch(`/api/perfiles/${correo}`, {
+        method: 'DELETE'
+    });
+    if (response.ok) {
+        cargarPerfiles();
+    } else {
+        alert('Error al eliminar perfil');
+    }
+}
+
+// Cargar tareas
 async function cargarTareas() {
     const response = await fetch('/api/tareas');
     const tareas = await response.json();
     const tbody = document.querySelector('#tablaTareas tbody');
+    tbody.innerHTML = '';
 
     tareas.forEach(tarea => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
+        const row = document.createElement('tr');
+        row.innerHTML = `
             <td>${tarea.nombre_tarea}</td>
+            <td>${tarea.descripcion}</td>
             <td><button onclick="eliminarTarea(${tarea.id_tarea})">Eliminar</button></td>
         `;
-        tbody.appendChild(tr);
+        tbody.appendChild(row);
     });
 }
 
-async function cargarAsignaciones() {
-    const response = await fetch('/api/asignaciones'); // Obtener asignaciones
-    const asignaciones = await response.json();
-    const tbody = document.querySelector('#tablaAsignaciones tbody');
-
-    asignaciones.forEach(asignacion => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${asignacion.id_usuario}</td>
-            <td>${asignacion.id_tarea}</td>
-            <td><button onclick="eliminarAsignacion(${asignacion.id_usuario}, ${asignacion.id_tarea})">Eliminar</button></td>
-        `;
-        tbody.appendChild(tr);
-    });
-}
-
-async function eliminarPerfil(id) {
-    const response = await fetch(`/api/perfiles/${id}`, {
+// Eliminar tarea
+async function eliminarTarea(id_tarea) {
+    const response = await fetch(`/api/tareas/${id_tarea}`, {
         method: 'DELETE'
     });
     if (response.ok) {
-        alert('Perfil eliminado con éxito');
-        location.reload(); // Recargar la página para actualizar la tabla
+        cargarTareas();
     } else {
-        alert('Error al eliminar el perfil');
+        alert('Error al eliminar tarea');
     }
 }
 
-async function eliminarTarea(id) {
-    const response = await fetch(`/api/tareas/${id}`, {
-        method: 'DELETE'
+// Cargar selects para desasignar tareas
+async function cargarSelects() {
+    const responsePerfiles = await fetch('/api/perfiles');
+    const perfiles = await responsePerfiles.json();
+    const selectPerfiles = document.getElementById('selectPerfiles');
+
+    perfiles.forEach(perfil => {
+        const option = document.createElement('option');
+        option.value = perfil.correo;
+        option.textContent = perfil.nombre;
+        selectPerfiles.appendChild(option);
     });
-    if (response.ok) {
-        alert('Tarea eliminada con éxito');
-        location.reload(); // Recargar la página para actualizar la tabla
-    } else {
-        alert('Error al eliminar la tarea');
-    }
+
+    const responseTareas = await fetch('/api/tareas');
+    const tareas = await responseTareas.json();
+    const selectTareas = document.getElementById('selectTareas');
+
+    tareas.forEach(tarea => {
+        const option = document.createElement('option');
+        option.value = tarea.id_tarea;
+        option.textContent = tarea.nombre_tarea;
+        selectTareas.appendChild(option);
+    });
+
+    document.getElementById('btnDesasignar').onclick = () => desasignarTarea(selectPerfiles.value, selectTareas.value);
 }
 
-async function eliminarAsignacion(id_usuario, id_tarea) {
-    // Aquí podrías crear un endpoint para eliminar asignaciones, por ejemplo:
-    const response = await fetch(`/api/asignaciones/${id_usuario}/${id_tarea}`, {
-        method: 'DELETE'
+// Desasignar tarea
+async function desasignarTarea(correo, id_tarea) {
+    const response = await fetch(`/api/desasignarTarea`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ correo, id_tarea })
     });
     if (response.ok) {
-        alert('Tarea asignada eliminada con éxito');
-        location.reload(); // Recargar la página para actualizar la tabla
+        alert('Tarea desasignada correctamente');
     } else {
-        alert('Error al eliminar la tarea asignada');
+        alert('Error al desasignar tarea');
     }
 }

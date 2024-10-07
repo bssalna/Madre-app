@@ -16,18 +16,18 @@
         <h2>Administradora de tu hogar.</h2>
     </header>
 
-    <main>
+    <div class="contenido">
         <h2>Eliminar Perfiles</h2>
         <table id="tablaPerfiles">
             <thead>
                 <tr>
                     <th>Correo</th>
                     <th>Nombre</th>
-                    <th>Acción</th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Aquí se llenarán los perfiles desde JavaScript -->
+                <!-- Perfiles se llenarán aquí -->
             </tbody>
         </table>
 
@@ -35,28 +35,26 @@
         <table id="tablaTareas">
             <thead>
                 <tr>
-                    <th>Nombre de la Tarea</th>
-                    <th>Acción</th>
+                    <th>Nombre Tarea</th>
+                    <th>Descripción</th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- Aquí se llenarán las tareas desde JavaScript -->
+                <!-- Tareas se llenarán aquí -->
             </tbody>
         </table>
 
-        <h2>Eliminar Tareas Asignadas</h2>
-        <table id="tablaAsignaciones">
-            <thead>
-                <tr>
-                    <th>ID Usuario</th>
-                    <th>ID Tarea</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Aquí se llenarán las asignaciones desde JavaScript -->
-            </tbody>
-        </table>
-    </main>
+        <h2>Desasignar Tareas</h2>
+        <div>
+            <select id="selectPerfiles"></select>
+            <select id="selectTareas"></select>
+            <button id="btnDesasignar">Desasignar Tarea</button>
+        </div>
+    </div>
+
+    <footer class="piedepagina">
+        <!-- Contenido del pie de página -->
+    </footer>
 </body>
 </html>
