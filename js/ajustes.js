@@ -28,11 +28,13 @@ async function eliminarPerfil(correo) {
         method: 'DELETE'
     });
     if (response.ok) {
-        cargarPerfiles();
+        cargarPerfiles(); // Volver a cargar perfiles después de eliminar
     } else {
-        alert('Error al eliminar perfil');
+        const errorData = await response.json();
+        alert(`Error al eliminar perfil: ${errorData.error}`);
     }
 }
+
 
 // Cargar tareas
 async function cargarTareas() {
@@ -64,45 +66,42 @@ async function eliminarTarea(id_tarea) {
     }
 }
 
-// Cargar selects para desasignar tareas
-async function cargarSelects() {
-    const responsePerfiles = await fetch('/api/perfiles');
-    const perfiles = await responsePerfiles.json();
-    const selectPerfiles = document.getElementById('selectPerfiles');
+// Cargar tareas asignadas
+async function cargarTareasAsignadas() {
+    const response = await fetch('/api/tareas_asignadas');
+    const tareasAsignadas = await response.json();
+    const tbody = document.querySelector('#tablaTareasAsignadas tbody');
+    tbody.innerHTML = '';
 
-    perfiles.forEach(perfil => {
-        const option = document.createElement('option');
-        option.value = perfil.correo;
-        option.textContent = perfil.nombre;
-        selectPerfiles.appendChild(option);
+    tareasAsignadas.forEach(tarea => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${tarea.correo}</td>
+            <td>${tarea.nombre_tarea}</td>
+            <td><button onclick="desasignarTarea(${tarea.id_tarea}, '${tarea.correo}')">Desasignar</button></td>
+        `;
+        tbody.appendChild(row);
     });
-
-    const responseTareas = await fetch('/api/tareas');
-    const tareas = await responseTareas.json();
-    const selectTareas = document.getElementById('selectTareas');
-
-    tareas.forEach(tarea => {
-        const option = document.createElement('option');
-        option.value = tarea.id_tarea;
-        option.textContent = tarea.nombre_tarea;
-        selectTareas.appendChild(option);
-    });
-
-    document.getElementById('btnDesasignar').onclick = () => desasignarTarea(selectPerfiles.value, selectTareas.value);
 }
 
 // Desasignar tarea
-async function desasignarTarea(correo, id_tarea) {
-    const response = await fetch(`/api/desasignarTarea`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ correo, id_tarea })
+async function desasignarTarea(id_tarea, correo) {
+    const response = await fetch(`/api/desasignar_tarea/${id_tarea}/${correo}`, {
+        method: 'PUT'
     });
     if (response.ok) {
-        alert('Tarea desasignada correctamente');
+        cargarTareasAsignadas(); // Volver a cargar las tareas asignadas
+        cargarTareas(); // Volver a cargar la lista de tareas
     } else {
         alert('Error al desasignar tarea');
     }
 }
+
+// Ejecutar la función al cargar la página
+document.addEventListener('DOMContentLoaded', () => {
+    cargarPerfiles();
+    cargarTareas();
+    cargarTareasAsignadas(); // Llamar la nueva función
+    cargarSelects();
+});
+

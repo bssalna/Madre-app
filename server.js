@@ -1,3 +1,4 @@
+
 // Importación de módulos
 const express = require('express');
 const mysql = require('mysql');
@@ -56,7 +57,7 @@ app.post('/login', [
     }
 
     const { correo, contrasena } = req.body;
-    const query = 'SELECT * FROM Perfiles WHERE correo = ?';
+    const query = 'SELECT * FROM perfiles WHERE correo = ?';
 
     db.query(query, [correo], async (err, results) => {
         if (err) throw err;
@@ -79,7 +80,7 @@ app.post('/api/perfiles', async (req, res) => {
     const { nombre, edad, estatura, peso, fecha_nacimiento, correo, contrasena } = req.body;
     const hashedPassword = await bcrypt.hash(contrasena, 10); 
 
-    const sql = 'INSERT INTO Perfiles (nombre, edad, estatura, peso, fecha_nacimiento, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    const sql = 'INSERT INTO perfiles (nombre, edad, estatura, peso, fecha_nacimiento, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)';
     db.query(sql, [nombre, edad, estatura, peso, fecha_nacimiento, correo, hashedPassword], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.status(201).json({ message: 'Perfil creado con éxito' });
@@ -88,7 +89,7 @@ app.post('/api/perfiles', async (req, res) => {
 
 // Obtener todos los perfiles
 app.get('/api/perfiles', (req, res) => {
-    const sql = 'SELECT * FROM Perfiles';
+    const sql = 'SELECT * FROM perfiles';
     db.query(sql, (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json(results);
@@ -171,34 +172,66 @@ app.post('/api/asignarTareas', async (req, res) => {
     }
 });
 
-// Obtener tareas disponibles para un usuario
-app.get('/api/tareasDisponibles/:correo', (req, res) => {
+
+// Eliminar perfiles y actualizar tareas
+app.delete('/api/perfiles/:correo', (req, res) => {
     const { correo } = req.params;
+
+    // Iniciar una transacción para asegurar consistencia
+    db.beginTransaction(err => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        // 1. Actualizar las tareas asignadas a este perfil a 'disponible'
+        const updateTareasSql = `
+            UPDATE tareas t
+            JOIN realiza r ON t.id_tarea = r.id_tarea
+            SET t.estado = 'disponible'
+            WHERE r.correo = ? AND r.estado = 'indisponible'
+        `;
+        db.query(updateTareasSql, [correo], (err, result) => {
+            if (err) {
+                return db.rollback(() => {
+                    return res.status(500).json({ error: err.message });
+                });
+            }
+
+            // 2. Eliminar el perfil
+            const deletePerfilSql = 'DELETE FROM perfiles WHERE correo = ?';
+            db.query(deletePerfilSql, [correo], (err, result) => {
+                if (err) {
+                    return db.rollback(() => {
+                        return res.status(500).json({ error: err.message });
+                    });
+                }
+
+                // Si todo fue bien, confirmar la transacción
+                db.commit(err => {
+                    if (err) {
+                        return db.rollback(() => {
+                            return res.status(500).json({ error: err.message });
+                        });
+                    }
+                    res.json({ message: 'Perfil eliminado y tareas actualizadas con éxito' });
+                });
+            });
+        });
+    });
+});
+
+// Eliminar una tarea por id_tarea
+app.delete('/api/tareas/:id_tarea', (req, res) => {
+    const { id_tarea } = req.params;
     
-    const sql = `
-        SELECT t.id_tarea, t.nombre_tarea, t.descripcion, t.valor_tarea, t.frecuencia
-        FROM tareas t
-        LEFT JOIN realiza r ON t.id_tarea = r.id_tarea AND r.estado = 'indisponible'
-        WHERE r.correo IS NULL AND t.estado = 'disponible' 
-    `;
-
-    db.query(sql, (err, results) => {
+    const sql = 'DELETE FROM tareas WHERE id_tarea = ?';
+    db.query(sql, [id_tarea], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json(results);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Tarea no encontrada' });
+        }
+        res.json({ message: 'Tarea eliminada con éxito' });
     });
 });
 
-
-// Eliminar perfiles
-app.delete('/api/perfiles/:id', (req, res) => {
-    const { id } = req.params;
-    const sql = 'DELETE FROM Perfiles WHERE correo = ?'; 
-
-    db.query(sql, [id], (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        res.json({ message: 'Perfil eliminado con éxito' });
-    });
-});
 
 // Obtener tareas disponibles para un usuario
 app.get('/api/tareasDisponibles/:correo', (req, res) => {
@@ -232,4 +265,34 @@ app.get('/api/perfilesConTareasIndisponibles', (req, res) => {
         res.json(results);
     });
 });
+// Obtener todas las tareas asignadas
+app.get('/api/tareas_asignadas', (req, res) => {
+    const sql = `
+        SELECT r.correo, t.nombre_tarea, r.id_tarea
+        FROM realiza r
+        JOIN tareas t ON r.id_tarea = t.id_tarea
+        WHERE t.estado = 'indisponible';
+    `;
+    db.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(results);
+    });
+});
 
+// Desasignar tarea y cambiar su estado a 'disponible'
+app.put('/api/desasignar_tarea/:id_tarea/:correo', (req, res) => {
+    const { id_tarea, correo } = req.params;
+
+    // Primero, eliminar la asignación de la tarea
+    const sqlDelete = 'DELETE FROM realiza WHERE id_tarea = ? AND correo = ?';
+    db.query(sqlDelete, [id_tarea, correo], (err, result) => {
+        if (err) return res.status(500).json({ error: err.message });
+
+        // Luego, actualizar el estado de la tarea
+        const sqlUpdate = 'UPDATE tareas SET estado = "disponible" WHERE id_tarea = ?';
+        db.query(sqlUpdate, [id_tarea], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ message: 'Tarea desasignada y actualizada a disponible' });
+        });
+    });
+});
