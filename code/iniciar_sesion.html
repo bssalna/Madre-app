@@ -22,19 +22,17 @@
         </a>
         <h2>Administradora de tu hogar.</h2>
     </header>
-    <div class="contenido">
-        <form id="loginForm" action="/login" method="post">
-            <h2>Por favor ingrese sus credenciales</h2>
+    <div class="contenido">       
+        <form class="form" id="loginForm" action="/login" method="post">
+            <h3>Por favor ingrese sus credenciales</h3>
             <label for="correo">Correo:</label>
-            <input type="email" id="correo" name="correo" placeholder="Ingrese su correo" required>                                  
+            <input class="prompts" type="email" id="correo" name="correo" placeholder="Ingrese su correo" required>                                  
             <label for="contrasena">Contraseña:</label>
-            <input type="password" id="contrasena" name="contrasena" placeholder="Ingrese su contraseña" required>
-            <p id="error" style="color: red;"></p> <!-- Añadir para mensajes de error -->
-            <input type="submit" id="submitiniciarsesion" value="Iniciar sesión">            
-            <br><br>
-            <a href="./crear_cuenta.html">Crear cuenta</a><br>
-            <br>          
-        </form>
+            <input class="prompts" type="password" id="contrasena" name="contrasena" placeholder="Ingrese su contraseña" required>
+            <p id="error" style="color: red;"></p> 
+            <input class="botones" type="submit" id="submitiniciarsesion" value="Iniciar sesión"><br><br>            
+            <a href="./crear_cuenta.html">crear cuenta</a><br>
+        </form>             
     </div>
     <footer class="piedepagina">
         <div class="contactenos">
@@ -43,6 +41,18 @@
             <p>Teléfono: 5555555</p>
             <p>Correo: brandonvelasalinas@gmail.com</p>
             <p>Dirección: Calle 30c sur # 1-61 este</p>
+        </div>
+        <div class="siguenosennuestrasredes"> 
+            <h3>Sigue a Madre en sus redes</h3><br><br>
+            <div class="iconosredsocial">
+            <a href=""><img src="/img/facebook-svgrepo-com.svg" alt=""></a>
+            <a href=""><img src="/img/twitter-rounded-svgrepo-com.svg" alt=""></a>
+            <a href=""><img src="/img/whatsapp-svgrepo-com.svg" alt=""></a>
+            </div>
+        </div>
+        <div class="nuestrosservicios">
+            <h3>Nuestros servicios</h3>
+            <a href="">Unete a nosotros</a>          
         </div>
     </footer>
 </body>

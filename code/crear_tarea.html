@@ -6,6 +6,7 @@
     <title>Crear Tarea - Madre</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;700;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Montserrat', sans-serif; }
     </style>
@@ -17,26 +18,28 @@
         </a>
         <h2>Administradora de tu hogar.</h2>
     </header>
-    <div class="formcrear">
+    <div class="form">
         <form id="crearTareaForm" action="/api/tareas" method="post">
-            <label for="nombre_tarea">Nombre de la tarea</label>
-            <input type="text" id="nombre_tarea" name="nombre_tarea" placeholder="Ejemplo: Lavar ollas" required>
-            <label for="descripcion_tarea">Descripción de la tarea</label>
-            <input type="text" id="descripcion" name="descripcion" placeholder="Ejemplo: ollas, sartenes etc." required>
-            <label for="valor_tarea">Complejidad de la tarea</label>
-            <select id="valor_tarea" name="valor_tarea" required>
+            
+            <input class="prompts" type="text" id="nombre_tarea" name="nombre_tarea" placeholder="Nombre de la tarea" required>
+            <input class="prompts" type="text" id="descripcion" name="descripcion" placeholder="Descripción de la tarea" required>
+            <label for="valor_tarea"><h3>Complejidad de la tarea</h3></label>
+            <select class="botones" id="valor_tarea" name="valor_tarea" required>
                 <option value="1">1 punto</option>
                 <option value="2">2 puntos</option>
             </select>
-            <label for="frecuencia">Frecuencia de la tarea</label>
-            <select id="frecuencia" name="frecuencia" required>
+            <label for="frecuencia"><h3>Frecuencia de la tarea</h3></label>
+            <select class="botones" id="frecuencia" name="frecuencia" required>
                 <option value="diaria">Diaria</option>
                 <option value="semanal">Semanal</option>
                 <option value="mensual">Mensual</option>
-            </select>
-            <input type="submit" id="submitcreartarea" value="Agregar tarea">       
+            </select><br><br>
+            <input class="botones" type="submit" id="submitcreartarea" value="Agregar tarea">       
         </form>
     </div> 
     <script src="/js/crear_tareas.js"></script>
 </body>
+<footer class="piedepagina">
+    <h2>Aquí podrás agregar tareas</h2>
+</footer>
 </html>

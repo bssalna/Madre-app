@@ -78,14 +78,28 @@ app.post('/login', [
 // Creación de nuevos perfiles
 app.post('/api/perfiles', async (req, res) => {
     const { nombre, edad, estatura, peso, fecha_nacimiento, correo, contrasena } = req.body;
-    const hashedPassword = await bcrypt.hash(contrasena, 10); 
 
-    const sql = 'INSERT INTO perfiles (nombre, edad, estatura, peso, fecha_nacimiento, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    db.query(sql, [nombre, edad, estatura, peso, fecha_nacimiento, correo, hashedPassword], (err, results) => {
+    // Consulta para verificar si el correo ya existe
+    const checkUserSql = 'SELECT * FROM perfiles WHERE correo = ?';
+    db.query(checkUserSql, [correo], async (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.status(201).json({ message: 'Perfil creado con éxito' });
+        
+        if (results.length > 0) {
+            // Si ya existe, enviar mensaje de error
+            return res.status(400).json({ message: 'El perfil ya existe' });
+        }
+        
+        // Si no existe, continuar con la creación del perfil
+        const hashedPassword = await bcrypt.hash(contrasena, 10);
+        const sql = 'INSERT INTO perfiles (nombre, edad, estatura, peso, fecha_nacimiento, correo, contrasena) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        
+        db.query(sql, [nombre, edad, estatura, peso, fecha_nacimiento, correo, hashedPassword], (err, results) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.status(201).json({ message: 'Perfil creado con éxito' });
+        });
     });
 });
+
 
 // Obtener todos los perfiles
 app.get('/api/perfiles', (req, res) => {

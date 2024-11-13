@@ -18,191 +18,266 @@
     }
 }
 
+@media screen and (max-width: 768px) {
+    body {
+        font-size: calc(14px + (16 - 14) * ((100vw - 320px) / (768 - 320))); /* Ajusta el tamaño de fuente para pantallas pequeñas */
+    }
+
+    .encabezado h1 {
+        font-size: calc(30px + (40 - 30) * ((100vw - 320px) / (768 - 320))); /* Tamaño más pequeño para h1 */
+    }
+
+    .encabezado h2 {
+        font-size: calc(16px + (20 - 16) * ((100vw - 320px) / (768 - 320))); /* Tamaño más pequeño para h2 */
+    }
+
+    .form, .formcrear {
+        width: calc(90% - 20px); /* Ancho más responsivo */
+    }
+
+    .tarea {
+        width: calc(100% - 20px); /* Ancho completo en móviles */
+    }
+
+    .menu ul {
+        flex-direction: column; /* Cambiar a columna en pantallas pequeñas */
+    }
+
+    .menu ul li {
+        margin-bottom: calc(10px + (20 - 10) * ((100vw - 320px) / (768 - 320))); /* Espacio entre elementos del menú */
+    }
+
+    .menu ul li a {
+        margin-right: 0; /* Sin margen derecho en móviles */
+    }
+
+}
+/*---------------------------------------------------------------------------------*/
+html{
+font-size: 1em;
+}
+/*---------------------------------------------------------------------------------*/
+body {
+    background-image: linear-gradient(to right, #f8c5f5, #ffffff77);
+    font-family: 'Montserrat', sans-serif;
+}
+/*---------------------------------------------------------------------------------*/
 .encabezado {
     text-align: center;
-    padding: 20px;
-    background-image: linear-gradient(to right, #fcc4f9, #ffffff77);
+    padding: 5% 0; 
+    background-image: linear-gradient(to right, #da76d5, #ffffff77);
+    height: 12em;
+    padding: 1em;
     animation: slideIn 1s ease-in-out;
 }
 
-body {
-    background-image: linear-gradient(to right, #fadaf8, #ffffff77);
-    font-family: 'Montserrat', sans-serif;
-}
 
-/* Estilos para pantallas más pequeñas */
-@media screen and (max-width: 768px) {
-    body {
-        /* Aquí puedes agregar estilos específicos para pantallas más pequeñas */
-    }
-}
 
 .encabezado h1 {
-    font-size: 70px;
+    font-size: calc(30px + (40 - 30) * ((100vw - 320px) / (768 - 320))); 
     color: #333;
 }
 
 .encabezado h2 {
-    font-size: 20px;
+    font-size: calc(16px + (20 - 16) * ((100vw - 320px) / (768 - 320))); 
     color: #666;
 }
 
-
-.contenido {
-    text-align: center;
-    margin-top: 20px;
-    
+/*---------------------------------------------------------------------------------*/
+.contenido {      
+    border: #000 5px;  
+    padding: 10px;  
 }
 
 .contenido img {
-    width: 500px;
-    border-radius: 20px;
+    width: 90%; 
+    max-width: 1000px;
+    display: block;
     margin: auto;
+    
+     
 }
 
-.form {
-    background-color: #fff;
-    width: 300px;
-    margin: 20px auto;
-    padding: 20px;
+.contenido h3 {
+margin-bottom: 15px;
+}
+
+.form {    
+    background-color: rgba(255, 255, 255, 0.13);
+    margin: auto;
+    padding: 10px;
+    border-radius: 20px; 
+    max-width: 400px;   
+    width: 90%; 
+    box-shadow: 0 5px 10px -5px rgb(0 0 0 / 30%);
+    text-align: center;  
+    border: solid 2px  rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    }
+
+.prompts{
+margin-bottom: 20px;
+width: 90%;
+max-width: 400px;
+border-radius: 10px;
+padding: 10px;
+border: 1px solid #ccc;
+outline: none;
+
+}
+
+.botones {
+    text-decoration: none;
+    color: #000;
+    padding: 20px 20px;
     border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border: solid 2px  rgba(255, 255, 255, 4); 
+    gap: 30px;    
 }
 
-input {
+.botones:hover {
+    background-color: #ff97fa;
+    border: solid 2px  rgba(255, 255, 255, 4);} 
+/*---------------------------------------------------------------------------------*/
+.piedepagina {
+    display: flex;    
+    grid-gap: 1rem;
+    flex-wrap: wrap; 
+    gap: 30px; 
+    background-image: linear-gradient(to right, #da76d5, #ffffff77);
+    padding: 1em;
+    flex-direction: row;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1em;  
     border-radius: 10px;
     padding: 10px;
     border: 1px solid #ccc;
     outline: none;
+
 }
+
+.contactenos{
+    flex: 1 1 calc(30% - 20px); 
+    padding: 10px;
+    border: 3px solid hwb(0 0% 100%);
+    box-sizing: border-box;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: min-content;     
+    
+}
+
+.contactenos p {
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+display: block;
+}
+
+.siguenosennuestrasredes{    
+    flex: 1 1 calc(30% - 20px); 
+    padding: 10px;
+    border: 3px solid hwb(0 0% 100%);
+    box-sizing: border-box;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-direction: column; 
+    justify-content: space-around; 
+    width: 30%
+    
+
+}
+
+
+.iconosredsocial img {
+    max-width: 30%; 
+    margin-bottom: 10px; 
+    width: 100%;
+    height: 100px;
+    flex-direction: row;
+}
+
+
+.nuestrosservicios {
+    flex: 1 1 calc(30% - 20px); /* Permitir que se adapten */
+    padding: 10px;
+    border: 3px solid hwb(0 0% 100%);
+    box-sizing: border-box;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%
+    
+}
+
+/*---------------------------------------------------------------------------------*/
+
 
 .menu ul {
     display: flex;
     flex-direction: row;
     list-style-type: none;
-    padding: 0;
-    background-color: #fadaf8cb;
+    padding: 5px 10px;  
+    gap: 30px;  
+    align-items: center;
+    
 }
 
 .menu ul li a {
-    margin-right: 100px;
     text-decoration: none;
     color: #000;
-    padding: 5px 10px;
+    padding: 20px 50px;
     border-radius: 5px;
+    border: solid 2px  rgba(255, 255, 255, 4);   
+        
 }
 
-.menu ul li:last-child {
-    margin-right: 0;
-}
 
-.menu ul li a:hover {
-    background-color: #ff97fa;
-}
 
-.piedepagina {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 50px;
-    background-image: linear-gradient(to right, #fcc4f9, #ffffff77);
-    height: 200px;
-    overflow: hidden;
-}
-
-.contactenos,
-.siguenosennuestrasredes,
-.nuestrosservicios {
-    width: calc(33.33% - 20px);
-    margin-bottom: 20px;
-    margin-right: 20px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    list-style-type: none;
-    height: auto;
-}
-
-.siguenosennuestrasredes {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.siguenosennuestrasredes img {
-    max-width: 10%;
-    height: auto;
-    margin-bottom: 10px;
-}
-
-.iconos ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-}
-
-.iconos li {
-    margin: 100px;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.iconos li:hover {
-    background-color: #ff97fa;
-}
-
-.iconos li a {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    text-align: center;
-}
-
-.iconos li img {
-    max-width: 200px;
-    height: auto;
-}
-
-.foters h2 {
-    font-size: 20px;
-    color: #666;
-    text-align: center;
-}
-
-.formcrear {
-    background-color: #fff;
-    width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
+--------------------------------------------------------------
 
 .tarea {
-    width: calc(33.33% - 20px);
-    margin-bottom: 20px;
-    margin-right: 20px;
+    width: 90%; 
+    height: 20px;   
     padding: 10px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    list-style-type: none;
-    height: auto;
+    box-sizing: border-box;     
+    flex-direction: row;
 }
 
-.tareas li:hover {
+.tarea ul {
+    list-style-type: none;  
+    display: flex;     
+    align-items: center;   
+    text-decoration: none;
+    padding: 20px 20px;        
+    text-align: center; 
+    padding: 20px;
+    justify-content: center;
+    
+}
+
+
+.tarea li:hover {
     background-color: #ff97fa;
+    border: solid 2px  rgba(255, 255, 255, 4); 
 }
 
-.tareas li a {
+.tarea li a {
     text-decoration: none;
     color: inherit;
     display: block;
     text-align: center;
 }
 
-.tareas li img {
-    max-width: 300px;
-    height: auto;
+.tarea li img {
+    width: 10%; 
+    height: auto; 
 }
 
 .perfil {

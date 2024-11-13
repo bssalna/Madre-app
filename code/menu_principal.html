@@ -7,30 +7,30 @@
     <title>Madre</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
+<script src="../js/menu_principal.js">
+    </script> 
+
 <body>
     <header class="encabezado">
         <a href="../iniciar_sesion.html" style="text-decoration: none;">
             <h1>Madre ♥.♥</h1>
         </a>
         <h2>Administradora de tu hogar.</h2>
+        <nav class="menu">
+            <ul>                    
+                <li><a  class="botones" href="../code/tareas.html" id="tareasmenu">Tareas✎</a></li>
+                <li><a  class="botones" href="../code/Ajustes.html" id="configuracionmenu">Ajustes🛠</a></li>
+            </ul>
+        </nav>
     </header>
-    
+
     <div class="contenido">
         <article>
-            <nav class="menu">
-                <ul>                    
-                    <li><a href="../code/tareas.html" id="tareasmenu">Tareas✎</a></li>
-                    <li><a href="../code/Ajustes.html" id="configuracionmenu">Ajustes🛠</a></li>
-                </ul>
-            </nav>
-            <div id="perfilesContainer" class="perfiles-container"></div> <!-- Contenedor para los perfiles y tareas -->
+            <div id="perfilesContainer" class="perfiles-container"></div> 
         </article>
-    </div>
-    
-    <footer class="foters">
+    </div>    
+    <footer class="piedepagina">
         <h2>"La virtud reside en el hogar. Cuando el hogar está bien ordenado, todas las cosas se encuentran en su lugar." - Confucio</h2>
     </footer>
-
-    <script src="../js/menu_principal.js"></script> <!-- Archivo JavaScript para manejar la lógica -->
 </body>
 </html>

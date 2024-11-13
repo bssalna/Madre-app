@@ -1,31 +1,39 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const form = document.querySelector('.formcrear form'); // Selecciona el formulario
+    const form = document.querySelector('form'); 
 
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
 
         const formData = new FormData(form);
-        const data = new URLSearchParams(formData).toString();
+        const data = Object.fromEntries(formData.entries()); // Convertimos a JSON para envío
+        console.log("Datos enviados:", data); // Paso 1: Verificar datos
 
         try {
             const response = await fetch('/api/perfiles', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: data
+                body: JSON.stringify(data) // Enviar como JSON
             });
 
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json(); // Obtener mensaje del servidor
+                if (errorData.message === 'El perfil ya existe') {
+                    alert('¡El perfil ya existe!'); // Alert específico si ya existe
+                    return;
+                }
+                throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
 
             const result = await response.json();
-            alert(result.message); // Mostrar mensaje de éxito
-            window.location.href = './iniciar_sesion.html'; // Redirigir al menú principal
+            alert('Perfil creado con éxito'); // Alert indicando que el perfil fue creado
+            window.location.href = './iniciar_sesion.html'; // Redirigir a iniciar sesión
         } catch (error) {
             console.error('Error:', error);
-            alert('¡El miembro ya existe!');
+            alert(error.message || 'Hubo un error al crear el perfil'); // Alert general
         }
     });
 });
+
+

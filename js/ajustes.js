@@ -16,7 +16,7 @@ async function cargarPerfiles() {
         row.innerHTML = `
             <td>${perfil.correo}</td>
             <td>${perfil.nombre}</td>
-            <td><button onclick="eliminarPerfil('${perfil.correo}')">Eliminar</button></td>
+            <td><button class="botones" onclick="eliminarPerfil('${perfil.correo}')">Eliminar</button></td>
         `;
         tbody.appendChild(row);
     });
@@ -48,7 +48,7 @@ async function cargarTareas() {
         row.innerHTML = `
             <td>${tarea.nombre_tarea}</td>
             <td>${tarea.descripcion}</td>
-            <td><button onclick="eliminarTarea(${tarea.id_tarea})">Eliminar</button></td>
+            <td><button class="botones" onclick="eliminarTarea(${tarea.id_tarea})">Eliminar</button></td>
         `;
         tbody.appendChild(row);
     });
@@ -78,7 +78,7 @@ async function cargarTareasAsignadas() {
         row.innerHTML = `
             <td>${tarea.correo}</td>
             <td>${tarea.nombre_tarea}</td>
-            <td><button onclick="desasignarTarea(${tarea.id_tarea}, '${tarea.correo}')">Desasignar</button></td>
+            <td><button class="botones" onclick="desasignarTarea(${tarea.id_tarea}, '${tarea.correo}')">Desasignar</button></td>
         `;
         tbody.appendChild(row);
     });
